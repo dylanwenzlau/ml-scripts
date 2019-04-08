@@ -19,7 +19,7 @@ char_to_int = params['char_to_int']
 labels = {v: k for k, v in params['labels_index'].items()}
 
 
-def predict_meme_text(template_id, num_boxes, init_text):
+def predict_meme_text(template_id, num_boxes, init_text = ''):
     template_id = str(template_id).zfill(12)
     min_score = 0.1
 
@@ -30,7 +30,7 @@ def predict_meme_text(template_id, num_boxes, init_text):
         for i in range(0, len(final_texts)):
             box_index = str(final_texts[i]['text'].count('|'))
             texts.append(template_id + '  ' + box_index + '  ' + final_texts[i]['text'])
-        sequences = util.texts_to_sequences(texts)
+        sequences = util.texts_to_sequences(texts, char_to_int)
         data = pad_sequences(sequences, maxlen=SEQUENCE_LENGTH)
         predictions_list = model.predict(data)
         sorted_predictions = []
